@@ -3,6 +3,7 @@ import Dashboard from './component/dashboard';
 import Data from './data/data.json';
 import Data1 from './data/data1.json';
 import Data2 from './data/data2.json';
+import Data3 from './data/data3.json';
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class App extends Component {
   }
   arrayMerge = () => {
     var superArray = [];
-    superArray = Data.concat(Data1).concat(Data2);
+    superArray = Data.concat(Data1).concat(Data2).concat(Data3);
     return superArray;
   }
   componentDidMount = () => {
