@@ -4,6 +4,8 @@ import Data from './data/data.json';
 import Data1 from './data/data1.json';
 import Data2 from './data/data2.json';
 import Data3 from './data/data3.json';
+import Data4 from './data/data4.json';
+import Data5 from './data/data5.json';
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +16,7 @@ class App extends Component {
   }
   arrayMerge = () => {
     var superArray = [];
-    superArray = Data.concat(Data1).concat(Data2).concat(Data3);
+    superArray = Data.concat(Data1).concat(Data2).concat(Data3).concat(Data4).concat(Data5);
     return superArray;
   }
   componentDidMount = () => {
