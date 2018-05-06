@@ -37,7 +37,7 @@ class Dashboard extends Component {
     $('.collapsible').collapsible('close', 0);
     var x = [];
     var i = this.state.index + 1;
-    if (this.state.index < this.state.data.length) {
+    if (i < this.state.data.length) {
       let word = this.props.data[i];
       word = word.split(":");
       x.push(<ul key="1" className="collapsible">
@@ -91,7 +91,7 @@ class Dashboard extends Component {
       'float': 'right'
     };
     return (<div className="container">
-      <div style={center}>{this.state.index}/{this.state.data.length}</div>
+      <div style={center}>{this.state.index}/{this.state.data.length-1}</div>
       {this.state.x}
       <div className="row">
         <div style={left}>
