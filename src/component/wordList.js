@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 var $ = window.$;
-class Dashboard extends Component {
+class WordList extends Component {
   constructor(props) {
     super(props);
     this.word='';
@@ -40,7 +40,7 @@ class Dashboard extends Component {
     }
   }
   pushX = (word) => {
-    var x = [],style;
+    var x = [];
     this.word=word;
     var words = localStorage.getItem("words");
     words=JSON.parse(words)
@@ -93,7 +93,6 @@ class Dashboard extends Component {
         localStorage.setItem("words", JSON.stringify(words));
       }
     }
-
   }
   render = () => {
     var left = {
@@ -105,11 +104,14 @@ class Dashboard extends Component {
     var right = {
       'float': 'right'
     };
+    var icon={
+      'marginTop': '21px'
+    }
     return (<div className="container">
       <div style={center}>{this.state.index}/{this.state.data.length - 1}</div>
       <div className="row">
         <div className="col s1">
-          <i className="material-icons" onClick={this.important}>star rate</i>
+          <i className="material-icons" style={icon} onClick={this.important}>star rate</i>
         </div>
         <div className="col s11">{this.state.x}</div>
       </div>
@@ -126,4 +128,4 @@ class Dashboard extends Component {
     </div>)
   }
 }
-export default Dashboard;
+export default WordList;
