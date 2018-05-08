@@ -42,21 +42,20 @@ class WordList extends Component {
   pushX = (word) => {
     var x = [];
     this.word=word;
-    var words = localStorage.getItem("words");
-    words=JSON.parse(words)
+    var words = JSON.parse(localStorage.getItem("words"));
     if (words === null) {
-      $('.collapsible-header').css('color', 'black');
+      $('#data').css('color', 'black');
     } else {
       if (words.indexOf(word)!==-1) {
-        $('.collapsible-header').css('color', 'red');
+        $('#data').css('color', 'red');
       } else {
-        $('.collapsible-header').css('color', 'black');
+        $('#data').css('color', 'black');
       }
     }
     word = word.split(":");
-    x.push(<ul key="1" className="collapsible">
+    x.push(<ul key="1"  className="collapsible">
       <li>
-        <div className="collapsible-header">{word[0]}</div>
+        <div id="data" className="collapsible-header">{word[0]}</div>
         <div className="collapsible-body">
           <span>{word[1]}</span>
         </div>
@@ -79,17 +78,17 @@ class WordList extends Component {
     if (words === null) {
       var arr = [];
       arr.push(this.word);
-      $('.collapsible-header').css('color', 'red');
+      $('#data').css('color', 'red');
       localStorage.setItem("words", JSON.stringify(arr));
     } else {
       if (words.indexOf(this.word)!==-1) {
         var i = words.indexOf(this.word);
         words.splice(i, 1);
-        $('.collapsible-header').css('color', 'black');
+        $('#data').css('color', 'black');
         localStorage.setItem("words", JSON.stringify(words));
       } else {
         words.push(this.word);
-        $('.collapsible-header').css('color', 'red');
+        $('#data').css('color', 'red');
         localStorage.setItem("words", JSON.stringify(words));
       }
     }

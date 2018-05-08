@@ -13,18 +13,16 @@ class SpecialList extends Component {
   }
   componentDidMount() {
     var words = JSON.parse(localStorage.getItem("words"));
-    this.count = 0
-    if (words !== null) {
+    if (words.length !== 0) {
       this.specialData=words;
-      var x = this.pushX(words[this.state.index]);
-      this.setState({x: x});
+      var x = this.pushSpecial(words[this.state.index]);
     } else {
       var x = [];
-      x.push(<div className="container">
-        <h4>Nothing So Far</h4>
+      x.push(<div key='1' className="container">
+        <h4>You havent selected any special words. Please go to the main word list to select your special words.</h4>
       </div>)
-      this.setState({x: x});
     }
+      this.setState({x: x});
     document.addEventListener("keydown", this.keyStroke, false);
   }
   componentWillUnmount() {
@@ -34,7 +32,7 @@ class SpecialList extends Component {
     $('.collapsible').collapsible('close', 0);
     var i = this.state.index + 1;
     if (i < this.specialData.length) {
-      var x = this.pushX(this.specialData[i]);
+      var x = this.pushSpecial(this.specialData[i]);
       this.setState({x: x, index: i});
     }
   }
@@ -42,65 +40,28 @@ class SpecialList extends Component {
     $('.collapsible').collapsible('close', 0);
     if (this.state.index > 0) {
       var i = this.state.index - 1;
-      var x = this.pushX(this.specialData[i]);
+      var x = this.pushSpecial(this.specialData[i]);
       this.setState({x: x, index: i});
     }
   }
-  pushX = (word) => {
-    var x = [];
-    var left = {
-      'float': 'left'
-    };
-    var center = {
-      'textAlign': 'center'
-    };
-    var right = {
-      'float': 'right'
-    };
-    var icon = {
-      'marginTop': '21px'
-    };
+  pushSpecial = (word) => {
+    var x = [],style={color:"red"};
     this.word = word;
-    var words = localStorage.getItem("words");
-    words = JSON.parse(words)
-    if (words === null) {
-      $('.collapsible-header').css('color', 'red');
-    } else {
-      if (words.indexOf(word) !== -1) {
-        $('.collapsible-header').css('color', 'black');
-      } else {
-        $('.collapsible-header').css('color', 'red');
-      }
-    }
     word = word.split(":");
-    x.push(<div  key="1" className="container">
-      <div style={center}>{this.state.index}/{this.specialData.length-1}</div>
-      <div className="row">
-        <div className="col s1">
-          <i className="material-icons" style={icon} onClick={this.important}>star rate</i>
+    var words = JSON.parse(localStorage.getItem("words"));
+    if (words.indexOf(word)!==-1) {
+      $('#specialData').css('color', 'black');
+    } else {
+      $('#specialData').css('color', 'red');
+    }
+    x.push(<ul  key="1" className="collapsible">
+      <li>
+        <div id="specialData" style={style} className="collapsible-header">{word[0]}</div>
+        <div className="collapsible-body">
+          <span>{word[1]}</span>
         </div>
-        <div className="col s11">
-          <ul className="collapsible">
-            <li>
-              <div className="collapsible-header">{word[0]}</div>
-              <div className="collapsible-body">
-                <span>{word[1]}</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="row">
-        <div style={left}>
-          <a className="waves-effect waves-light btn" onClick={this.previous}>
-            <i className="material-icons left">reply</i>button</a>
-        </div>
-        <div style={right}>
-          <a className="waves-effect waves-light btn" onClick={this.next}>
-            <i className="material-icons left">forward</i>button</a>
-        </div>
-      </div>
-    </div>)
+      </li>
+    </ul>)
     return x;
   }
 
@@ -115,26 +76,54 @@ class SpecialList extends Component {
   }
   important = () => {
     var words = JSON.parse(localStorage.getItem("words"));
-    if (words === null) {
-      var arr = [];
-      arr.push(this.word);
-      $('.collapsible-header').css('color', 'black');
-      localStorage.setItem("words", JSON.stringify(arr));
-    } else {
-      if (words.indexOf(this.word) !== -1) {
         var i = words.indexOf(this.word);
         words.splice(i, 1);
-        $('.collapsible-header').css('color', 'red');
+        this.specialData=words;
         localStorage.setItem("words", JSON.stringify(words));
-      } else {
-        words.push(this.word);
-        $('.collapsible-header').css('color', 'black');
-        localStorage.setItem("words", JSON.stringify(words));
-      }
-    }
+        if (words.length === 0) {
+          var x = [];
+          x.push(<div key='1' className="container">
+          <h4>You havent selected any special words. Please go to the main word list to select your special words.</h4>
+          </div>)
+        }else{
+          var x = this.pushSpecial(words[this.state.index]);
+        }
+        this.setState({x: x});
   }
   render = () => {
-    return (this.state.x)
+    var left = {
+      'float': 'left'
+    };
+    var center = {
+      'textAlign': 'center'
+    };
+    var right = {
+      'float': 'right'
+    };
+    var icon = {
+      'marginTop': '21px'
+    };
+    return (<div className="container">
+        <div style={center}>{this.state.index}/{this.specialData.length-1}</div>
+        <div className="row">
+          <div className="col s1">
+            <i className="material-icons" style={icon} onClick={this.important}>star rate</i>
+          </div>
+          <div className="col s11">
+          {this.state.x}
+          </div>
+        </div>
+        <div className="row">
+          <div style={left}>
+            <a className="waves-effect waves-light btn" onClick={this.previous}>
+              <i className="material-icons left">reply</i>button</a>
+          </div>
+          <div style={right}>
+            <a className="waves-effect waves-light btn" onClick={this.next}>
+              <i className="material-icons left">forward</i>button</a>
+          </div>
+        </div>
+      </div>)
   }
 }
 export default SpecialList;
