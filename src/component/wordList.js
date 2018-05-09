@@ -71,7 +71,9 @@ class WordList extends Component {
       this.previous();
     } else if (event.keyCode === 32) {
       $('#collapsible-normal').collapsible('open', 0);
-    }
+    } else if (event.keyCode === 38 || event.keyCode === 40) {
+      this.important();
+    } 
   }
   important = () => {
     var words = JSON.parse(localStorage.getItem("words"));

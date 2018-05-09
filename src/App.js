@@ -22,6 +22,7 @@ class App extends Component {
   }
   componentDidMount = () => {
     var array = this.arrayMerge();
+    console.log(array.length);
     var currentIndex = array.length,
       temporaryValue,
       randomIndex;
@@ -41,7 +42,7 @@ class App extends Component {
     };
     return (<div className="App">
       <header className="App-header">
-        <h1  style={hStyle}>GRE WORD PRACTICE</h1>
+        <h1  style={hStyle}>WORD PRACTICE</h1>
         <h4  style={hStyle}>Best Of Luck</h4>
       </header>
       <Tab data={this.state.data}/>
