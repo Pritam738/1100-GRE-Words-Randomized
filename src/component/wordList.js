@@ -24,7 +24,7 @@ class WordList extends Component {
     document.removeEventListener("keydown", this.keyStroke, false);
   }
   next = () => {
-    $('.collapsible').collapsible('close', 0);
+    $('#collapsible-normal').collapsible('close', 0);
     var i = this.state.index + 1;
     if (i < this.state.data.length) {
       var x = this.pushX(this.props.data[i]);
@@ -32,7 +32,7 @@ class WordList extends Component {
     }
   }
   previous = () => {
-    $('.collapsible').collapsible('close', 0);
+    $('#collapsible-normal').collapsible('close', 0);
     if (this.state.index > 0) {
       var i = this.state.index - 1;
       var x = this.pushX(this.props.data[i]);
@@ -53,7 +53,7 @@ class WordList extends Component {
       }
     }
     word = word.split(":");
-    x.push(<ul key="1"  className="collapsible">
+    x.push(<ul key={1} id="collapsible-normal" className="collapsible">
       <li>
         <div id="data" className="collapsible-header">{word[0]}</div>
         <div className="collapsible-body">
@@ -70,7 +70,7 @@ class WordList extends Component {
     } else if (event.keyCode === 37) {
       this.previous();
     } else if (event.keyCode === 32) {
-      $('.collapsible').collapsible('open', 0);
+      $('#collapsible-normal').collapsible('open', 0);
     }
   }
   important = () => {

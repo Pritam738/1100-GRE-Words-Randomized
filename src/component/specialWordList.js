@@ -13,11 +13,11 @@ class SpecialList extends Component {
   }
   componentDidMount() {
     var words = JSON.parse(localStorage.getItem("words"));
-    if (words.length !== 0) {
+    var x = [];
+    if (words !== null && words.length !== 0) {
       this.specialData=words;
-      var x = this.pushSpecial(words[this.state.index]);
+      x = this.pushSpecial(words[this.state.index]);
     } else {
-      var x = [];
       x.push(<div key='1' className="container">
         <h4>You havent selected any special words. Please go to the main word list to select your special words.</h4>
       </div>)
@@ -29,7 +29,7 @@ class SpecialList extends Component {
     document.removeEventListener("keydown", this.keyStroke, false);
   }
   next = () => {
-    $('.collapsible').collapsible('close', 0);
+    $('#collapsible-special').collapsible('close', 0);
     var i = this.state.index + 1;
     if (i < this.specialData.length) {
       var x = this.pushSpecial(this.specialData[i]);
@@ -37,7 +37,7 @@ class SpecialList extends Component {
     }
   }
   previous = () => {
-    $('.collapsible').collapsible('close', 0);
+    $('#collapsible-special').collapsible('close', 0);
     if (this.state.index > 0) {
       var i = this.state.index - 1;
       var x = this.pushSpecial(this.specialData[i]);
@@ -54,7 +54,7 @@ class SpecialList extends Component {
     } else {
       $('#specialData').css('color', 'red');
     }
-    x.push(<ul  key="1" className="collapsible">
+    x.push(<ul  key="1" id="collapsible-special" className="collapsible">
       <li>
         <div id="specialData" style={style} className="collapsible-header">{word[0]}</div>
         <div className="collapsible-body">
@@ -71,22 +71,22 @@ class SpecialList extends Component {
     } else if (event.keyCode === 37) {
       this.previous();
     } else if (event.keyCode === 32) {
-      $('.collapsible').collapsible('open', 0);
+      $('#collapsible-special').collapsible('open', 0);
     }
   }
   important = () => {
     var words = JSON.parse(localStorage.getItem("words"));
+    var x = [];
         var i = words.indexOf(this.word);
         words.splice(i, 1);
         this.specialData=words;
         localStorage.setItem("words", JSON.stringify(words));
         if (words.length === 0) {
-          var x = [];
           x.push(<div key='1' className="container">
           <h4>You havent selected any special words. Please go to the main word list to select your special words.</h4>
           </div>)
         }else{
-          var x = this.pushSpecial(words[this.state.index]);
+          x = this.pushSpecial(words[this.state.index]);
         }
         this.setState({x: x});
   }
