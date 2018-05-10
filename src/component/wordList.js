@@ -1,48 +1,48 @@
 import React, {Component} from 'react';
-var $ = window.$;
+let $ = window.$;
 class WordList extends Component {
   constructor(props) {
     super(props);
     this.word='';
-    this.keyStroke = this.keyStroke.bind(this);
+    this.keyStrokeWord = this.keyStrokeWord.bind(this);
     this.state = {
-      index: 0,
+      wordIndex: 0,
       x: [],
       data: []
     };
   }
   componentDidUpdate = () => {
     if (this.state.data.length === 0) {
-      var x = this.pushX(this.props.data[this.state.index]);
+      let x = this.pushX(this.props.data[this.state.wordIndex]);
       this.setState({x: x, data: this.props.data});
     }
   }
   componentDidMount() {
-    document.addEventListener("keydown", this.keyStroke, false);
+    document.addEventListener("keydown", this.keyStrokeWord, false);
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.keyStroke, false);
+    document.removeEventListener("keydown", this.keyStrokeWord, false);
   }
-  next = () => {
+  nextWord = () => {
     $('#collapsible-normal').collapsible('close', 0);
-    var i = this.state.index + 1;
+    let i = this.state.wordIndex + 1;
     if (i < this.state.data.length) {
-      var x = this.pushX(this.props.data[i]);
-      this.setState({x: x, index: i});
+      let x = this.pushX(this.props.data[i]);
+      this.setState({x: x, wordIndex: i});
     }
   }
-  previous = () => {
+  previousWord = () => {
     $('#collapsible-normal').collapsible('close', 0);
-    if (this.state.index > 0) {
-      var i = this.state.index - 1;
-      var x = this.pushX(this.props.data[i]);
-      this.setState({x: x, index: i});
+    if (this.state.wordIndex > 0) {
+      let i = this.state.wordIndex - 1;
+      let x = this.pushX(this.props.data[i]);
+      this.setState({x: x, wordIndex: i});
     }
   }
   pushX = (word) => {
-    var x = [];
+    let x = [];
     this.word=word;
-    var words = JSON.parse(localStorage.getItem("words"));
+    let words = JSON.parse(localStorage.getItem("words"));
     if (words === null) {
       $('#data').css('color', 'black');
     } else {
@@ -64,27 +64,28 @@ class WordList extends Component {
     return x;
   }
 
-  keyStroke = (event) => {
+  keyStrokeWord = (event) => {
     if (event.keyCode === 39) {
-      this.next();
+      this.nextWord();
     } else if (event.keyCode === 37) {
-      this.previous();
+      this.previousWord();
     } else if (event.keyCode === 32) {
       $('#collapsible-normal').collapsible('open', 0);
     } else if (event.keyCode === 38 || event.keyCode === 40) {
-      this.important();
-    } 
+      this.importantWord();
+    }
   }
-  important = () => {
-    var words = JSON.parse(localStorage.getItem("words"));
+  
+  importantWord = () => {
+    let words = JSON.parse(localStorage.getItem("words"));
     if (words === null) {
-      var arr = [];
+      let arr = [];
       arr.push(this.word);
       $('#data').css('color', 'red');
       localStorage.setItem("words", JSON.stringify(arr));
     } else {
       if (words.indexOf(this.word)!==-1) {
-        var i = words.indexOf(this.word);
+        let i = words.indexOf(this.word);
         words.splice(i, 1);
         $('#data').css('color', 'black');
         localStorage.setItem("words", JSON.stringify(words));
@@ -96,33 +97,33 @@ class WordList extends Component {
     }
   }
   render = () => {
-    var left = {
+    let left = {
       'float': 'left'
     };
-    var center = {
+    let center = {
       'textAlign': 'center'
     };
-    var right = {
+    let right = {
       'float': 'right'
     };
-    var icon={
+    let icon={
       'marginTop': '21px'
     }
     return (<div className="container">
-      <div style={center}>{this.state.index}/{this.state.data.length - 1}</div>
+      <div style={center}>{this.state.wordIndex}/{this.state.data.length - 1}</div>
       <div className="row">
         <div className="col s1">
-          <i className="material-icons" style={icon} onClick={this.important}>star rate</i>
+          <i className="material-icons" style={icon} onClick={this.importantWord}>star rate</i>
         </div>
         <div className="col s11">{this.state.x}</div>
       </div>
       <div className="row">
         <div style={left}>
-          <a className="waves-effect waves-light btn" onClick={this.previous}>
+          <a className="waves-effect waves-light btn" onClick={this.previousWord}>
             <i className="material-icons left">reply</i>button</a>
         </div>
         <div style={right}>
-          <a className="waves-effect waves-light btn" onClick={this.next}>
+          <a className="waves-effect waves-light btn" onClick={this.nextWord}>
             <i className="material-icons left">forward</i>button</a>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-var $ = window.$;
+let $ = window.$;
 class SpecialList extends Component {
   constructor(props) {
     super(props);
-    this.word = '';
+    this.specialWord = '';
     this.specialData=[];
     this.keyStroke = this.keyStroke.bind(this);
     this.state = {
@@ -12,8 +12,8 @@ class SpecialList extends Component {
     };
   }
   componentDidMount() {
-    var words = JSON.parse(localStorage.getItem("words"));
-    var x = [];
+    let words = JSON.parse(localStorage.getItem("words"));
+    let x = [];
     if (words !== null && words.length !== 0) {
       this.specialData=words;
       x = this.pushSpecial(words[this.state.index]);
@@ -30,17 +30,17 @@ class SpecialList extends Component {
   }
   next = () => {
     $('#collapsible-special').collapsible('close', 0);
-    var i = Math.floor((Math.random() * this.specialData.length-1) + 1);
+    let i = Math.floor((Math.random() * this.specialData.length-1) + 1);
     if (i < this.specialData.length) {
-      var x = this.pushSpecial(this.specialData[i]);
+      let x = this.pushSpecial(this.specialData[i]);
       this.setState({x: x, index: i});
     }
   }
   pushSpecial = (word) => {
-    var x = [],style={color:"red"};
-    this.word = word;
+    let x = [],style={color:"red"};
+    this.specialWord = word;
     word = word.split(":");
-    var words = JSON.parse(localStorage.getItem("words"));
+    let words = JSON.parse(localStorage.getItem("words"));
     if (words.indexOf(word)!==-1) {
       $('#specialData').css('color', 'black');
     } else {
@@ -60,18 +60,16 @@ class SpecialList extends Component {
   keyStroke = (event) => {
     if (event.keyCode === 39) {
       this.next();
-    } else if (event.keyCode === 37) {
-      this.previous();
-    } else if (event.keyCode === 32) {
+    }else if (event.keyCode === 32) {
       $('#collapsible-special').collapsible('open', 0);
-    } else if (event.keyCode === 38 || event.keyCode === 40) {
+    } else if (event.keyCode === 34) {
       this.important();
     }
   }
   important = () => {
-    var words = JSON.parse(localStorage.getItem("words"));
-    var x = [];
-        var i = words.indexOf(this.word);
+    let words = JSON.parse(localStorage.getItem("words"));
+    let x = [];
+        let i = words.indexOf(this.specialWord);
         words.splice(i, 1);
         this.specialData=words;
         localStorage.setItem("words", JSON.stringify(words));
@@ -85,16 +83,16 @@ class SpecialList extends Component {
         this.setState({x: x});
   }
   render = () => {
-    var left = {
+    let left = {
       'float': 'left'
     };
-    var center = {
+    let center = {
       'textAlign': 'center'
     };
-    var right = {
+    let right = {
       'margin-left': '50%'
     };
-    var icon = {
+    let icon = {
       'marginTop': '21px'
     };
     return (<div className="container">
