@@ -22,7 +22,6 @@ class App extends Component {
   }
   componentDidMount = () => {
     var array = this.arrayMerge();
-    console.log(array.length);
     var currentIndex = array.length,
       temporaryValue,
       randomIndex;
