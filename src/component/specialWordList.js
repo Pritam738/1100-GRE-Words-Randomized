@@ -30,16 +30,8 @@ class SpecialList extends Component {
   }
   next = () => {
     $('#collapsible-special').collapsible('close', 0);
-    var i = this.state.index + 1;
+    var i = Math.floor((Math.random() * this.specialData.length-1) + 1);
     if (i < this.specialData.length) {
-      var x = this.pushSpecial(this.specialData[i]);
-      this.setState({x: x, index: i});
-    }
-  }
-  previous = () => {
-    $('#collapsible-special').collapsible('close', 0);
-    if (this.state.index > 0) {
-      var i = this.state.index - 1;
       var x = this.pushSpecial(this.specialData[i]);
       this.setState({x: x, index: i});
     }
@@ -100,7 +92,7 @@ class SpecialList extends Component {
       'textAlign': 'center'
     };
     var right = {
-      'float': 'right'
+      'margin-left': '50%'
     };
     var icon = {
       'marginTop': '21px'
@@ -115,16 +107,10 @@ class SpecialList extends Component {
           {this.state.x}
           </div>
         </div>
-        <div className="row">
-          <div style={left}>
-            <a className="waves-effect waves-light btn" onClick={this.previous}>
-              <i className="material-icons left">reply</i>button</a>
-          </div>
           <div style={right}>
             <a className="waves-effect waves-light btn" onClick={this.next}>
               <i className="material-icons left">forward</i>button</a>
           </div>
-        </div>
       </div>)
   }
 }
