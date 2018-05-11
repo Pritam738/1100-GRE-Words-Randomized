@@ -71,9 +71,11 @@ class WordList extends Component {
       this.previousWord();
     } else if (event.keyCode === 32) {
       $('#collapsible-normal').collapsible('open', 0);
-    } else if (event.keyCode === 38 || event.keyCode === 40) {
+    } else if (event.keyCode === 38) {
       this.importantWord();
-    }
+    } else if (event.keyCode === 40){
+	  this.unImportantWord();
+	}
   }
   
   importantWord = () => {
@@ -84,16 +86,21 @@ class WordList extends Component {
       $('#data').css('color', 'red');
       localStorage.setItem("words", JSON.stringify(arr));
     } else {
-      if (words.indexOf(this.word)!==-1) {
-        let i = words.indexOf(this.word);
-        words.splice(i, 1);
-        $('#data').css('color', 'black');
-        localStorage.setItem("words", JSON.stringify(words));
-      } else {
+      if (words.indexOf(this.word)===-1) {
         words.push(this.word);
         $('#data').css('color', 'red');
         localStorage.setItem("words", JSON.stringify(words));
-      }
+      } 
+    }
+  }
+  
+  unImportantWord = () => {
+    let existingWords = JSON.parse(localStorage.getItem("words"));
+    if (existingWords !== null && existingWords.indexOf(this.word)!==-1) {
+      let i = existingWords.indexOf(this.word);
+      existingWords.splice(i, 1);
+      $('#data').css('color', 'black');
+      localStorage.setItem("words", JSON.stringify(existingWords));
     }
   }
   render = () => {

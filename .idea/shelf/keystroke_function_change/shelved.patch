@@ -1,0 +1,93 @@
+Index: src/component/specialWordList.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, {Component} from 'react';\nlet $ = window.$;\nclass SpecialList extends Component {\n  constructor(props) {\n    super(props);\n    this.specialWord = '';\n    this.specialData=[];\n    this.keyStroke = this.keyStroke.bind(this);\n    this.state = {\n      index: 0,\n      x: []\n    };\n  }\n  componentDidMount() {\n    let words = JSON.parse(localStorage.getItem(\"words\"));\n    let x = [];\n    if (words !== null && words.length !== 0) {\n      this.specialData=words;\n      x = this.pushSpecial(words[this.state.index]);\n    } else {\n      x.push(<div key='1' className=\"container\">\n        <h4>You havent selected any special words. Please go to the main word list to select your special words.</h4>\n      </div>)\n    }\n      this.setState({x: x});\n    document.addEventListener(\"keydown\", this.keyStroke, false);\n  }\n  componentWillUnmount() {\n    document.removeEventListener(\"keydown\", this.keyStroke, false);\n  }\n  next = () => {\n    $('#collapsible-special').collapsible('close', 0);\n    let i = Math.floor((Math.random() * this.specialData.length-1) + 1);\n    if (i < this.specialData.length) {\n      let x = this.pushSpecial(this.specialData[i]);\n      this.setState({x: x, index: i});\n    }\n  }\n  pushSpecial = (word) => {\n    let x = [],style={color:\"red\"};\n    this.specialWord = word;\n    word = word.split(\":\");\n    let words = JSON.parse(localStorage.getItem(\"words\"));\n    if (words.indexOf(word)!==-1) {\n      $('#specialData').css('color', 'black');\n    } else {\n      $('#specialData').css('color', 'red');\n    }\n    x.push(<ul  key=\"1\" id=\"collapsible-special\" className=\"collapsible\">\n      <li>\n        <div id=\"specialData\" style={style} className=\"collapsible-header\">{word[0]}</div>\n        <div className=\"collapsible-body\">\n          <span>{word[1]}</span>\n        </div>\n      </li>\n    </ul>)\n    return x;\n  }\n\n  keyStroke = (event) => {\n    if (event.keyCode === 39) {\n      this.next();\n    }else if (event.keyCode === 32) {\n      $('#collapsible-special').collapsible('open', 0);\n    } else if (event.keyCode === 34) {\n      this.important();\n    }\n  }\n  important = () => {\n    let words = JSON.parse(localStorage.getItem(\"words\"));\n    let x = [];\n        let i = words.indexOf(this.specialWord);\n        words.splice(i, 1);\n        this.specialData=words;\n        localStorage.setItem(\"words\", JSON.stringify(words));\n        if (words.length === 0) {\n          x.push(<div key='1' className=\"container\">\n          <h4>You havent selected any special words. Please go to the main word list to select your special words.</h4>\n          </div>)\n        }else{\n          x = this.pushSpecial(words[this.state.index]);\n        }\n        this.setState({x: x});\n  }\n  render = () => {\n    let left = {\n      'float': 'left'\n    };\n    let center = {\n      'textAlign': 'center'\n    };\n    let right = {\n      'margin-left': '50%'\n    };\n    let icon = {\n      'marginTop': '21px'\n    };\n    return (<div className=\"container\">\n        <div style={center}>{this.state.index}/{this.specialData.length-1}</div>\n        <div className=\"row\">\n          <div className=\"col s1\">\n            <i className=\"material-icons\" style={icon} onClick={this.important}>star rate</i>\n          </div>\n          <div className=\"col s11\">\n          {this.state.x}\n          </div>\n        </div>\n          <div style={right}>\n            <a className=\"waves-effect waves-light btn\" onClick={this.next}>\n              <i className=\"material-icons left\">forward</i>button</a>\n          </div>\n      </div>)\n  }\n}\nexport default SpecialList;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/component/specialWordList.js	(revision 0dd87bd96c6b863ac8d6033da0e7a9bfc5d0d197)
++++ src/component/specialWordList.js	(date 1526018466656)
+@@ -62,15 +62,16 @@
+       this.next();
+     }else if (event.keyCode === 32) {
+       $('#collapsible-special').collapsible('open', 0);
+-    } else if (event.keyCode === 34) {
+-      this.important();
++    } else if (event.keyCode === 40) {
++      this.unImportantWord();
+     }
+   }
+-  important = () => {
++  unImportantWord = () => {
+     let words = JSON.parse(localStorage.getItem("words"));
+     let x = [];
+-        let i = words.indexOf(this.specialWord);
+-        words.splice(i, 1);
++    let i = words.indexOf(this.specialWord);
++	if(words !==null && i!==-1){
++		words.splice(i, 1);
+         this.specialData=words;
+         localStorage.setItem("words", JSON.stringify(words));
+         if (words.length === 0) {
+@@ -81,6 +82,7 @@
+           x = this.pushSpecial(words[this.state.index]);
+         }
+         this.setState({x: x});
++	}
+   }
+   render = () => {
+     let left = {
+Index: src/component/wordList.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, {Component} from 'react';\nlet $ = window.$;\nclass WordList extends Component {\n  constructor(props) {\n    super(props);\n    this.word='';\n    this.keyStrokeWord = this.keyStrokeWord.bind(this);\n    this.state = {\n      wordIndex: 0,\n      x: [],\n      data: []\n    };\n  }\n  componentDidUpdate = () => {\n    if (this.state.data.length === 0) {\n      let x = this.pushX(this.props.data[this.state.wordIndex]);\n      this.setState({x: x, data: this.props.data});\n    }\n  }\n  componentDidMount() {\n    document.addEventListener(\"keydown\", this.keyStrokeWord, false);\n  }\n  componentWillUnmount() {\n    document.removeEventListener(\"keydown\", this.keyStrokeWord, false);\n  }\n  nextWord = () => {\n    $('#collapsible-normal').collapsible('close', 0);\n    let i = this.state.wordIndex + 1;\n    if (i < this.state.data.length) {\n      let x = this.pushX(this.props.data[i]);\n      this.setState({x: x, wordIndex: i});\n    }\n  }\n  previousWord = () => {\n    $('#collapsible-normal').collapsible('close', 0);\n    if (this.state.wordIndex > 0) {\n      let i = this.state.wordIndex - 1;\n      let x = this.pushX(this.props.data[i]);\n      this.setState({x: x, wordIndex: i});\n    }\n  }\n  pushX = (word) => {\n    let x = [];\n    this.word=word;\n    let words = JSON.parse(localStorage.getItem(\"words\"));\n    if (words === null) {\n      $('#data').css('color', 'black');\n    } else {\n      if (words.indexOf(word)!==-1) {\n        $('#data').css('color', 'red');\n      } else {\n        $('#data').css('color', 'black');\n      }\n    }\n    word = word.split(\":\");\n    x.push(<ul key={1} id=\"collapsible-normal\" className=\"collapsible\">\n      <li>\n        <div id=\"data\" className=\"collapsible-header\">{word[0]}</div>\n        <div className=\"collapsible-body\">\n          <span>{word[1]}</span>\n        </div>\n      </li>\n    </ul>)\n    return x;\n  }\n\n  keyStrokeWord = (event) => {\n    if (event.keyCode === 39) {\n      this.nextWord();\n    } else if (event.keyCode === 37) {\n      this.previousWord();\n    } else if (event.keyCode === 32) {\n      $('#collapsible-normal').collapsible('open', 0);\n    } else if (event.keyCode === 38 || event.keyCode === 40) {\n      this.importantWord();\n    }\n  }\n  \n  importantWord = () => {\n    let words = JSON.parse(localStorage.getItem(\"words\"));\n    if (words === null) {\n      let arr = [];\n      arr.push(this.word);\n      $('#data').css('color', 'red');\n      localStorage.setItem(\"words\", JSON.stringify(arr));\n    } else {\n      if (words.indexOf(this.word)!==-1) {\n        let i = words.indexOf(this.word);\n        words.splice(i, 1);\n        $('#data').css('color', 'black');\n        localStorage.setItem(\"words\", JSON.stringify(words));\n      } else {\n        words.push(this.word);\n        $('#data').css('color', 'red');\n        localStorage.setItem(\"words\", JSON.stringify(words));\n      }\n    }\n  }\n  render = () => {\n    let left = {\n      'float': 'left'\n    };\n    let center = {\n      'textAlign': 'center'\n    };\n    let right = {\n      'float': 'right'\n    };\n    let icon={\n      'marginTop': '21px'\n    }\n    return (<div className=\"container\">\n      <div style={center}>{this.state.wordIndex}/{this.state.data.length - 1}</div>\n      <div className=\"row\">\n        <div className=\"col s1\">\n          <i className=\"material-icons\" style={icon} onClick={this.importantWord}>star rate</i>\n        </div>\n        <div className=\"col s11\">{this.state.x}</div>\n      </div>\n      <div className=\"row\">\n        <div style={left}>\n          <a className=\"waves-effect waves-light btn\" onClick={this.previousWord}>\n            <i className=\"material-icons left\">reply</i>button</a>\n        </div>\n        <div style={right}>\n          <a className=\"waves-effect waves-light btn\" onClick={this.nextWord}>\n            <i className=\"material-icons left\">forward</i>button</a>\n        </div>\n      </div>\n    </div>)\n  }\n}\nexport default WordList;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/component/wordList.js	(revision 0dd87bd96c6b863ac8d6033da0e7a9bfc5d0d197)
++++ src/component/wordList.js	(date 1526011616849)
+@@ -71,9 +71,11 @@
+       this.previousWord();
+     } else if (event.keyCode === 32) {
+       $('#collapsible-normal').collapsible('open', 0);
+-    } else if (event.keyCode === 38 || event.keyCode === 40) {
++    } else if (event.keyCode === 38) {
+       this.importantWord();
+-    }
++    } else if (event.keyCode === 40){
++	  this.unImportantWord();
++	}
+   }
+   
+   importantWord = () => {
+@@ -84,18 +86,23 @@
+       $('#data').css('color', 'red');
+       localStorage.setItem("words", JSON.stringify(arr));
+     } else {
+-      if (words.indexOf(this.word)!==-1) {
+-        let i = words.indexOf(this.word);
+-        words.splice(i, 1);
+-        $('#data').css('color', 'black');
+-        localStorage.setItem("words", JSON.stringify(words));
+-      } else {
++      if (words.indexOf(this.word)===-1) {
+         words.push(this.word);
+         $('#data').css('color', 'red');
+         localStorage.setItem("words", JSON.stringify(words));
+-      }
++      } 
+     }
+   }
++  
++  unImportantWord = () => {
++    let existingWords = JSON.parse(localStorage.getItem("words"));
++    if (existingWords !== null && existingWords.indexOf(this.word)!==-1) {
++      let i = existingWords.indexOf(this.word);
++      existingWords.splice(i, 1);
++      $('#data').css('color', 'black');
++      localStorage.setItem("words", JSON.stringify(existingWords));
++    }
++  }
+   render = () => {
+     let left = {
+       'float': 'left'
