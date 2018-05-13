@@ -62,16 +62,15 @@ class SpecialList extends Component {
       this.next();
     }else if (event.keyCode === 32) {
       $('#collapsible-special').collapsible('open', 0);
-    } else if (event.keyCode === 40) {
-      this.unImportantWord();
+    } else if (event.keyCode === 34) {
+      this.important();
     }
   }
-  unImportantWord = () => {
+  important = () => {
     let words = JSON.parse(localStorage.getItem("words"));
     let x = [];
-    let i = words.indexOf(this.specialWord);
-	if(words !==null && i!==-1){
-		words.splice(i, 1);
+        let i = words.indexOf(this.specialWord);
+        words.splice(i, 1);
         this.specialData=words;
         localStorage.setItem("words", JSON.stringify(words));
         if (words.length === 0) {
@@ -82,7 +81,6 @@ class SpecialList extends Component {
           x = this.pushSpecial(words[this.state.index]);
         }
         this.setState({x: x});
-	}
   }
   render = () => {
     let left = {
@@ -98,6 +96,7 @@ class SpecialList extends Component {
       'marginTop': '21px'
     };
     return (<div className="container">
+        <div style={center}>{this.specialData.length}</div>
         <div className="row">
           <div className="col s1">
             <i className="material-icons" style={icon} onClick={this.important}>star rate</i>
