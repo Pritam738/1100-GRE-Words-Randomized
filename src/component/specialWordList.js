@@ -70,6 +70,7 @@ class SpecialList extends Component {
     let words = JSON.parse(localStorage.getItem("words"));
     let x = [];
         let i = words.indexOf(this.specialWord);
+		console.log("Word to be spliced "+ words[i] + "\n");
         words.splice(i, 1);
         this.specialData=words;
         localStorage.setItem("words", JSON.stringify(words));
@@ -81,6 +82,7 @@ class SpecialList extends Component {
           x = this.pushSpecial(words[this.state.index]);
         }
         this.setState({x: x});
+		console.log("Total length :" + this.specialData.length + "\n");
   }
   render = () => {
     let left = {
