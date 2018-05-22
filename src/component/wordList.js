@@ -85,6 +85,7 @@ class WordList extends Component {
       localStorage.setItem("words", JSON.stringify(arr));
     } else {
       if (words.indexOf(this.word)!==-1) {
+		  console.log("Word is present hence splicing it :" + this.word);
         let i = words.indexOf(this.word);
         words.splice(i, 1);
         $('#data').css('color', 'black');
@@ -95,6 +96,7 @@ class WordList extends Component {
         localStorage.setItem("words", JSON.stringify(words));
       }
     }
+	console.log("length of the words :" + words.length);
   }
   render = () => {
     let left = {
