@@ -40,7 +40,7 @@ class App extends Component {
       }
     })
     var array = JSON.parse(localStorage.getItem("array"));
-    if (array.length === 0) {
+    if (array===null || array.length === 0) {
       array = this.arrayMerge();
       var currentIndex = array.length,
         temporaryValue,
