@@ -19,7 +19,7 @@ class App extends Component {
   }
   arrayMerge = () => {
     var superArray = [];
-    superArray = Data8;
+    superArray = Data3;
 	//Data.concat(Data1).concat(Data2).concat(Data7);
 	//(Data3).concat(Data4).concat(Data5).concat(Data6);
     return superArray;
@@ -45,8 +45,6 @@ class App extends Component {
     };
     return (<div className="App">
       <header className="App-header">
-        <h1  style={hStyle}>WORD PRACTICE</h1>
-        <h4  style={hStyle}>Best Of Luck</h4>
       </header>
       <Tab data={this.state.data}/>
     </div>);
